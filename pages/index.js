@@ -6,19 +6,49 @@ const PAGE_SIZE = 8;
 
 export async function getServerSideProps() {
   try {
-    const res = await fetch('https://fakestoreapi.com/products');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const res = await fetch('https://fakestoreapi.com/products', {
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      throw new Error(`API responded with status ${res.status}`);
+    }
+
     const products = await res.json();
     return { props: { products, error: null } };
   } catch (err) {
-    return { props: { products: [], error: 'Failed to fetch products.' } };
+    console.error('SSR fetch error:', err.message);
+    return { props: { products: [], error: 'Failed to fetch products. Please refresh the page.' } };
   }
 }
 
-export default function Home({ products, error }) {
+export default function Home({ products: initialProducts, error: initialError }) {
+  const [products, setProducts] = useState(initialProducts);
+  const [error, setError] = useState(initialError);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState('');
   const [isFiltering, setIsFiltering] = useState(false);
   const [page, setPage] = useState(1);
+
+  // Fallback: if SSR fetch failed, retry on the client
+  useEffect(() => {
+    if (initialError && products.length === 0) {
+      fetch('https://fakestoreapi.com/products')
+        .then((res) => res.json())
+        .then((data) => {
+          setProducts(data);
+          setError(null);
+        })
+        .catch(() => {
+          setError('Failed to fetch products. Please refresh the page.');
+        });
+    }
+  }, []);
 
   // Debounce search input + show a loading spinner while "filtering"
   useEffect(() => {
