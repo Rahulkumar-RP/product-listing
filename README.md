@@ -4,14 +4,14 @@ A responsive product listing page built with **Next.js**, **React**, and **Boots
 
 ## Features
 
-- ✅ SSR product listing via `getServerSideProps`
-- ✅ Product cards: image, title, price, category, rating
-- ✅ Responsive layout using Bootstrap grid (1 / 2 / 3 / 4 columns depending on screen size)
-- ✅ Client-side search bar (debounced) to filter products by title
-- ✅ Loading spinner shown while filtering
-- ✅ Client-side pagination (8 products per page)
-- ✅ Dynamic product details page (`/product/[id]`) with SSR
-- ✅ Graceful error handling if the API call fails
+-  SSR product listing via `getServerSideProps`
+-  Product cards: image, title, price, category, rating
+-  Responsive layout using Bootstrap grid (1 / 2 / 3 / 4 columns depending on screen size)
+-  Client-side search bar (debounced) to filter products by title
+-  Loading spinner shown while filtering
+-  Client-side pagination (8 products per page)
+-  Dynamic product details page (`/product/[id]`) with SSR
+-  Graceful error handling if the API call fails
 
 ## Tech Stack
 
@@ -52,7 +52,7 @@ A responsive product listing page built with **Next.js**, **React**, and **Boots
 3. Keep default settings (Next.js is auto-detected) and click **Deploy**.
 4. Add the live URL to this README once deployed.
 
-**Live demo:** _add your Vercel URL here after deploying_
+**Live demo:** https://product-listing-theta-three.vercel.app
 
 ## Project Structure
 
